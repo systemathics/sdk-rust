@@ -25,6 +25,7 @@ jobs:
         with:
           profile: minimal
           toolchain: stable
+      - uses: Swatinem/rust-cache@v1
       - name: Install cargo-edit
         run: cargo install cargo-edit  
       - name: Set VERSION environment variable
@@ -41,4 +42,5 @@ jobs:
       - name: Cargo Login
         run: cargo login ${{ secrets.CRATES_IO_API_KEY }}        
       - name: Create Crates.io package
-        run: cargo publish
+        # add --allow-dirty because Cargo.toml was just modified to set tag version
+        run: cargo publish --allow-dirty
