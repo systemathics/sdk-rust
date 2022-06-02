@@ -22,7 +22,7 @@ fn is_proto(entry: Option<DirEntry>) -> Option<DirEntry> {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut vec: Vec<DirEntry> = Vec::new();
-    for entry in WalkDir::new("proto")
+    for entry in WalkDir::new("src")
         .into_iter()
         .filter_map(|e| (is_proto(e.ok())))
     {
@@ -35,6 +35,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     tonic_build::configure()
         .build_server(false)
         .out_dir("src")
-        .compile(&protos[..], &["proto"])?;
+        .compile(&protos[..], &["src"])?;
     return Ok(());
 }
