@@ -22,6 +22,7 @@
 syntax = "proto3";
 
 import "systemathics/apis/type/shared/v1/identifier.proto";
+import "systemathics/apis/type/shared/v1/condition.proto";
 
 package systemathics.apis.services.tick_conditions.v1;
 
@@ -52,24 +53,5 @@ message TickConditionsRequest
 message TickConditionsResponse
 {
 	// The conditions: an array of Condition objects
-	repeated Condition data = 1;
-}
-
-// Contains the tick trading conditions's data: value, description, regular and auction.
-message Condition
-{
-	// The trading condition value
-	string value = 1;
-	
-	// The trading condition description
-	string description = 2;
-
-	// The trading condition comment
-	string comment = 3;
-	
-	// Is regular market condition
-	bool regular = 4;
-	
-	// Is auction market condition
-	bool auction = 5;
+	repeated systemathics.apis.type.shared.v1.Condition data = 1;
 }

@@ -18,19 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// The market book data
+// The trading conditions
 syntax = "proto3";
-
-import "systemathics/apis/type/shared/v1/limit.proto";
 
 package systemathics.apis.type.shared.v1;
 
-// The book : bid and ask arrays
-message Book
+// Contains the tick trading conditions's data: value, description, regular and auction.
+message Condition
 {
-	// The bid array : buy side
-	repeated Limit bid = 1;
+	// The trading condition value
+	string value = 1;
+	
+	// The trading condition description
+	string description = 2;
 
-	// The ask array : sell side
-	repeated Limit ask = 2;
+	// The trading condition comment
+	string comment = 3;
+	
+	// Is regular market condition
+	bool regular = 4;
+	
+	// Is auction market condition
+	bool auction = 5;
 }
