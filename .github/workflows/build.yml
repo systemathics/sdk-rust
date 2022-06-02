@@ -43,4 +43,5 @@ jobs:
         run: cargo login ${{ secrets.CRATES_IO_API_KEY }}        
       - name: Create Crates.io package
         # add --allow-dirty because Cargo.toml was just modified to set tag version
-        run: cargo publish --allow-dirty
+        # add --no-verify because build.rs recomputes protos
+        run: cargo publish --allow-dirty --no-verify
