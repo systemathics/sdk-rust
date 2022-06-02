@@ -139,9 +139,6 @@ pub struct TickTradesAndBookRequest {
     /// \[Optional\] The maximum number of depth, if not set use the default (10).
     #[prost(message, optional, tag="5")]
     pub max_depth: ::core::option::Option<i32>,
-    /// \[Optional\] The contributors: get the quotes foreach depth, by default the value is set to false
-    #[prost(bool, tag="6")]
-    pub contributors: bool,
 }
 /// Contains the tick by tick normalized trades data: key, time stamp, price, size, condition.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -521,9 +518,6 @@ pub struct TickBookRequest {
     /// \[Optional\] The maximum number of depth, if not set use the default (10).
     #[prost(message, optional, tag="5")]
     pub max_depth: ::core::option::Option<i32>,
-    /// \[Optional\] The contributors: get the quotes foreach depth, by default the value is set to false
-    #[prost(bool, tag="6")]
-    pub contributors: bool,
 }
 /// Contains the tick by tick normalized book : data or mapping.
 #[derive(Clone, PartialEq, ::prost::Message)]

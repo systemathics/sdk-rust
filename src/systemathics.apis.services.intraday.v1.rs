@@ -33,8 +33,8 @@ pub struct IntradayVwap {
     #[prost(double, tag="2")]
     pub price: f64,
     /// Total traded volume of the sampling period
-    #[prost(double, tag="3")]
-    pub volume: f64,
+    #[prost(int64, tag="3")]
+    pub volume: i64,
     /// The data quality scoring : from 0 (bad) to 100 (good)
     #[prost(double, tag="4")]
     pub score: f64,
@@ -161,8 +161,8 @@ pub struct IntradayPrice {
     #[prost(double, tag="2")]
     pub price: f64,
     /// Total traded volume of the sampling period
-    #[prost(double, tag="3")]
-    pub volume: f64,
+    #[prost(int64, tag="3")]
+    pub volume: i64,
     /// The data quality scoring : from 0 (bad) to 100 (good)
     #[prost(double, tag="4")]
     pub score: f64,
@@ -298,8 +298,8 @@ pub struct IntradayBar {
     #[prost(double, tag="5")]
     pub close: f64,
     /// Total traded volume of the sampling period
-    #[prost(double, tag="6")]
-    pub volume: f64,
+    #[prost(int64, tag="6")]
+    pub volume: i64,
     /// Tick count of the sampling period
     #[prost(int32, tag="7")]
     pub count: i32,

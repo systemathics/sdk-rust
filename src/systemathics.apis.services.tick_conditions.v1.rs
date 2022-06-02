@@ -24,7 +24,26 @@ pub mod tick_conditions_request {
 pub struct TickConditionsResponse {
     /// The conditions: an array of Condition objects
     #[prost(message, repeated, tag="1")]
-    pub data: ::prost::alloc::vec::Vec<super::super::super::r#type::shared::v1::Condition>,
+    pub data: ::prost::alloc::vec::Vec<Condition>,
+}
+/// Contains the tick trading conditions's data: value, description, regular and auction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Condition {
+    /// The trading condition value
+    #[prost(string, tag="1")]
+    pub value: ::prost::alloc::string::String,
+    /// The trading condition description
+    #[prost(string, tag="2")]
+    pub description: ::prost::alloc::string::String,
+    /// The trading condition comment
+    #[prost(string, tag="3")]
+    pub comment: ::prost::alloc::string::String,
+    /// Is regular market condition
+    #[prost(bool, tag="4")]
+    pub regular: bool,
+    /// Is auction market condition
+    #[prost(bool, tag="5")]
+    pub auction: bool,
 }
 /// Generated client implementations.
 pub mod tick_conditions_service_client {

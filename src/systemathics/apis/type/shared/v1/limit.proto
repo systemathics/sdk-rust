@@ -21,8 +21,6 @@
 // The market book limit data
 syntax = "proto3";
 
-import "systemathics/apis/type/shared/v1/quote.proto";
-
 package systemathics.apis.type.shared.v1;
 
 // The limit : bid or ask price and size at a given depth
@@ -36,7 +34,4 @@ message Limit
 
 	// The depth of the limit
 	uint32 depth = 3;
-
-	// The contributors
-	repeated Quote quotes = 4;
 }

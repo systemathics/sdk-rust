@@ -39,8 +39,8 @@ pub struct DailyBar {
     #[prost(double, tag="5")]
     pub close: f64,
     /// Total traded volume of the day
-    #[prost(double, tag="6")]
-    pub volume: f64,
+    #[prost(int64, tag="6")]
+    pub volume: i64,
     /// The data quality scoring : from 0 (bad) to 100 (good)
     #[prost(double, tag="7")]
     pub score: f64,
@@ -164,8 +164,8 @@ pub struct DailyVwap {
     #[prost(double, tag="2")]
     pub price: f64,
     /// Total traded volume of the day
-    #[prost(double, tag="3")]
-    pub volume: f64,
+    #[prost(int64, tag="3")]
+    pub volume: i64,
     /// The data quality scoring : from 0 (bad) to 100 (good)
     #[prost(double, tag="4")]
     pub score: f64,
@@ -289,8 +289,8 @@ pub struct DailyPrice {
     #[prost(double, tag="2")]
     pub price: f64,
     /// Total traded volume of the day
-    #[prost(double, tag="3")]
-    pub volume: f64,
+    #[prost(int64, tag="3")]
+    pub volume: i64,
     /// The data quality scoring : from 0 (bad) to 100 (good)
     #[prost(double, tag="4")]
     pub score: f64,

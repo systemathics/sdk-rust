@@ -136,40 +136,6 @@ pub enum BookUpdates {
     /// Initial Snapshot then incremental updates on each update
     Incrementals = 2,
 }
-/// Contains side values.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum Side {
-    /// The unspecfied side 
-    Unspecified = 0,
-    /// The bid side
-    Bid = 1,
-    /// The ask side
-    Ask = 2,
-}
-/// Contains the quote details : buy or sell order.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Quote {
-    /// The unique identifier of the quote
-    #[prost(string, tag="1")]
-    pub id: ::prost::alloc::string::String,
-    /// The size of the quote
-    #[prost(message, optional, tag="2")]
-    pub size: ::core::option::Option<i64>,
-    /// The price of the quote 
-    #[prost(message, optional, tag="3")]
-    pub price: ::core::option::Option<f64>,
-    /// The condition of the quote :
-    ///<br> 0 : Limit Order
-    ///<br> 2 : Market Order
-    ///<br> 3 : Market To Limit Order
-    ///<br> Note: Market orders will not have a price field, only a size. Similarly for Market To Limit orders during auction phases.
-    #[prost(message, optional, tag="4")]
-    pub condition: ::core::option::Option<i32>,
-    /// The side : Buy (bid) or Sell (ask) order
-    #[prost(enumeration="Side", tag="5")]
-    pub side: i32,
-}
 /// The limit : bid or ask price and size at a given depth
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Limit {
@@ -182,9 +148,6 @@ pub struct Limit {
     /// The depth of the limit
     #[prost(uint32, tag="3")]
     pub depth: u32,
-    /// The contributors
-    #[prost(message, repeated, tag="4")]
-    pub quotes: ::prost::alloc::vec::Vec<Quote>,
 }
 /// The book : bid and ask arrays
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -349,6 +312,17 @@ pub mod market_field_update {
         StringValue(::prost::alloc::string::String),
     }
 }
+/// Contains side values.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Side {
+    /// The unspecfied side 
+    Unspecified = 0,
+    /// The bid side
+    Bid = 1,
+    /// The ask side
+    Ask = 2,
+}
 /// Contains Market Book By Limit updates data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MblMarketBookUpdates {
@@ -435,6 +409,29 @@ pub struct BookData {
     #[prost(message, optional, tag="4")]
     pub book: ::core::option::Option<Book>,
 }
+/// Contains the quote details : buy or sell order.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Quote {
+    /// The unique identifier of the quote
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    /// The size of the quote
+    #[prost(message, optional, tag="2")]
+    pub size: ::core::option::Option<i64>,
+    /// The price of the quote 
+    #[prost(message, optional, tag="3")]
+    pub price: ::core::option::Option<f64>,
+    /// The condition of the quote :
+    ///<br> 0 : Limit Order
+    ///<br> 2 : Market Order
+    ///<br> 3 : Market To Limit Order
+    ///<br> Note: Market orders will not have a price field, only a size. Similarly for Market To Limit orders during auction phases.
+    #[prost(message, optional, tag="4")]
+    pub condition: ::core::option::Option<i32>,
+    /// The side : Buy (bid) or Sell (ask) order
+    #[prost(enumeration="Side", tag="5")]
+    pub side: i32,
+}
 /// Contains the normalized quotes data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotesData {
@@ -447,25 +444,6 @@ pub struct QuotesData {
     /// The quotes array
     #[prost(message, repeated, tag="3")]
     pub quotes: ::prost::alloc::vec::Vec<Quote>,
-}
-/// Contains the tick trading conditions's data: value, description, regular and auction.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Condition {
-    /// The trading condition value
-    #[prost(string, tag="1")]
-    pub value: ::prost::alloc::string::String,
-    /// The trading condition description
-    #[prost(string, tag="2")]
-    pub description: ::prost::alloc::string::String,
-    /// The trading condition comment
-    #[prost(string, tag="3")]
-    pub comment: ::prost::alloc::string::String,
-    /// Is regular market condition
-    #[prost(bool, tag="4")]
-    pub regular: bool,
-    /// Is auction market condition
-    #[prost(bool, tag="5")]
-    pub auction: bool,
 }
 /// Contains the intraday sampling intervals.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

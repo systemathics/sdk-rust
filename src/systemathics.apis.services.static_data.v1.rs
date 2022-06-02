@@ -7,7 +7,7 @@ pub struct StaticDataRequest {
     /// \[Optional\] Asset name
     #[prost(message, optional, tag="2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    /// \[Optional\] Asset exchange (exchange, primary or operating mic code)
+    /// \[Optional\] Asset exchange (mic code)
     #[prost(message, optional, tag="3")]
     pub exchange: ::core::option::Option<::prost::alloc::string::String>,
     /// \[Optional\] Asset ticker (code as provided by the exchange)
@@ -19,49 +19,37 @@ pub struct StaticDataRequest {
     /// \[Optional\] Future category
     #[prost(message, optional, tag="6")]
     pub future_category: ::core::option::Option<::prost::alloc::string::String>,
-    /// \[Optional\] Crypto base currency
-    #[prost(message, optional, tag="7")]
-    pub crypto_base_currency: ::core::option::Option<::prost::alloc::string::String>,
-    /// \[Optional\] Crypto quote currency
-    #[prost(message, optional, tag="8")]
-    pub crypto_quote_currency: ::core::option::Option<::prost::alloc::string::String>,
     /// \[Optional\] Equity sector
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag="7")]
     pub equity_sector: ::core::option::Option<::prost::alloc::string::String>,
     /// \[Optional\] Index if the asset belongs to an index components
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag="8")]
     pub index: ::core::option::Option<::prost::alloc::string::String>,
-    /// \[Optional\] Mapping codes: isin, cusip, sedol, cik, figi, figic, reuters, bloomberg, morningstar, etc.
-    #[prost(message, optional, tag="11")]
+    /// \[Optional\] Mapping codes: isin, cusip, sedol, ric, figi, etc.
+    #[prost(message, optional, tag="9")]
     pub code: ::core::option::Option<::prost::alloc::string::String>,
     /// \[Optional\] Define the first element index to be retrieved
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag="10")]
     pub start: ::core::option::Option<i32>,
     /// \[Optional\] Select the first elements retrieved, by default count is set to 100
-    #[prost(message, optional, tag="13")]
+    #[prost(message, optional, tag="11")]
     pub count: ::core::option::Option<i32>,
 }
 /// Represents a reference data response grouped by asset type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticDataResponse {
-    /// The reference data for futures: the futures array
+    /// The reference data for futures: an array of FutureEntry objects
     #[prost(message, repeated, tag="1")]
     pub futures: ::prost::alloc::vec::Vec<FutureEntry>,
-    /// The reference data for equities: the equities array
+    /// The reference data for equities: an array of EquityEntry objects
     #[prost(message, repeated, tag="2")]
     pub equities: ::prost::alloc::vec::Vec<EquityEntry>,
-    /// The reference data for etfs: the etfs array
+    /// The reference data for etfs: an array of EtfEntry objects
     #[prost(message, repeated, tag="3")]
     pub etfs: ::prost::alloc::vec::Vec<EtfEntry>,
-    /// The reference data for indices: the indices array
+    /// The reference data for indices: an array of IndexEntry objects
     #[prost(message, repeated, tag="4")]
     pub indices: ::prost::alloc::vec::Vec<IndexEntry>,
-    /// The reference data for crypto currencies: the cryptos array
-    #[prost(message, repeated, tag="5")]
-    pub cryptos: ::prost::alloc::vec::Vec<CryptoEntry>,
-    /// The reference data for forex pairs: the forex array
-    #[prost(message, repeated, tag="6")]
-    pub forex: ::prost::alloc::vec::Vec<ForexEntry>,
 }
 /// Contains the reference data for equities.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -69,108 +57,60 @@ pub struct EquityEntry {
     /// Identifiers: asset identifier
     #[prost(message, optional, tag="1")]
     pub identifier: ::core::option::Option<super::super::super::r#type::shared::v1::Identifier>,
-    /// General information: the asset class
+    /// General information: asset class
     #[prost(string, tag="2")]
     pub r#type: ::prost::alloc::string::String,
-    /// General information: the primary exchange code (mic)
+    /// General information: asset country code (ISO 3166)
     #[prost(string, tag="3")]
-    pub primary: ::prost::alloc::string::String,
-    /// General information: the operating exchange code (mic)
-    #[prost(string, tag="4")]
-    pub operating: ::prost::alloc::string::String,
-    /// General information: the full name 
-    #[prost(string, tag="5")]
-    pub name: ::prost::alloc::string::String,
-    /// General information: the currency code (ISO 4217)
-    #[prost(string, tag="6")]
-    pub currency: ::prost::alloc::string::String,
-    /// General information: the country code (ISO 3166)
-    #[prost(string, tag="7")]
     pub country: ::prost::alloc::string::String,
-    /// General information: the tick size rule table
-    #[prost(message, repeated, tag="8")]
-    pub tick_size_rule: ::prost::alloc::vec::Vec<TickSize>,
-    /// General information: the major index array
-    #[prost(string, repeated, tag="9")]
-    pub index: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Trading hours: the open time (continuous trading)
-    #[prost(message, optional, tag="10")]
-    pub open: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the close time (continuous trading)
-    #[prost(message, optional, tag="11")]
-    pub close: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the time zone
+    /// General information: asset full name 
+    #[prost(string, tag="4")]
+    pub name: ::prost::alloc::string::String,
+    /// General information: asset currency code (ISO 4217)
+    #[prost(string, tag="5")]
+    pub currency: ::prost::alloc::string::String,
+    /// General information: asset primary exchange code (mic)
+    #[prost(string, tag="6")]
+    pub primary: ::prost::alloc::string::String,
+    /// General information: asset tick size rule table
+    #[prost(string, tag="7")]
+    pub tick_size_rule: ::prost::alloc::string::String,
+    /// General information: asset mapping codes
+    #[prost(map="string, string", tag="8")]
+    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// General information: asset index if it belongs to an index
+    #[prost(string, tag="9")]
+    pub index: ::prost::alloc::string::String,
+    /// Trading hours: open time (continuous trading)
+    #[prost(string, tag="10")]
+    pub open: ::prost::alloc::string::String,
+    /// Trading hours: close time (continuous trading)
+    #[prost(string, tag="11")]
+    pub close: ::prost::alloc::string::String,
+    /// Trading hours: time zone
     #[prost(string, tag="12")]
     pub time_zone: ::prost::alloc::string::String,
-    /// Specifications: the lot size (minimum quantity to trade)
+    /// Specifications: lot size (minimum quantity to trade)
     #[prost(int64, tag="13")]
     pub lot_size: i64,
-    /// Specifications: the point value
+    /// Specifications: point value
     #[prost(double, tag="14")]
     pub point_value: f64,
-    /// Reference data : the average price
-    #[prost(message, optional, tag="15")]
-    pub price: ::core::option::Option<f64>,
-    /// Reference data : the average daily volume 
-    #[prost(message, optional, tag="16")]
-    pub volume: ::core::option::Option<i64>,
-    /// Reference data : the time stamp of the refernce data
-    #[prost(message, optional, tag="17")]
-    pub time: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Mapping : the count of sources used to cross validate and complete the asset's information
-    #[prost(int32, tag="18")]
-    pub sources: i32,
-    /// Mapping: the mapping codes
-    #[prost(map="string, string", tag="19")]
-    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Mapping: the bloomberg code
-    #[prost(string, tag="20")]
-    pub bloomberg: ::prost::alloc::string::String,
-    /// Mapping: the reuters code
-    #[prost(string, tag="21")]
-    pub reuters: ::prost::alloc::string::String,
-    /// Mapping: the morningstar code
-    #[prost(string, tag="22")]
-    pub morningstar: ::prost::alloc::string::String,
-    /// Mapping: the figi code (Financial Instrument Global Identifier, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="23")]
-    pub figi: ::prost::alloc::string::String,
-    /// Mapping: the figic code (Financial Instrument Global Identifier Composite, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="24")]
-    pub figic: ::prost::alloc::string::String,
     /// Specific values for the equity: isin code (International Securities Identifying Number)
-    #[prost(string, tag="25")]
+    #[prost(string, tag="15")]
     pub isin: ::prost::alloc::string::String,
     /// Specific values for the equity: cusip code : Committee on Uniform Security Identification Procedures
-    #[prost(string, tag="26")]
+    #[prost(string, tag="16")]
     pub cusip: ::prost::alloc::string::String,
     /// Specific values for the equity: sedol code : Stock Exchange Daily Official List
-    #[prost(string, tag="27")]
+    #[prost(string, tag="17")]
     pub sedol: ::prost::alloc::string::String,
-    /// Specific values for the equity: cik (Central Index Key number). The Cik is used as a unique identifier for financial filings with the Security and Exchange Commision of the USA
-    #[prost(string, tag="28")]
-    pub cik: ::prost::alloc::string::String,
     /// Specific values for the equity: sectors definitions
-    #[prost(map="string, string", tag="29")]
+    #[prost(map="string, string", tag="18")]
     pub sectors: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Specific values for the equity: market capitalization
-    #[prost(message, optional, tag="30")]
+    #[prost(message, optional, tag="19")]
     pub capitalization: ::core::option::Option<f64>,
-    /// Specific values for the equity: the description of the company
-    #[prost(string, tag="31")]
-    pub description: ::prost::alloc::string::String,
-    /// Specific values for the equity: the main address of the company
-    #[prost(string, tag="32")]
-    pub address: ::prost::alloc::string::String,
-    /// Specific values for the equity: the main phone of the company
-    #[prost(string, tag="33")]
-    pub phone: ::prost::alloc::string::String,
-    /// Specific values for the equity: the main email of the company
-    #[prost(string, tag="34")]
-    pub email: ::prost::alloc::string::String,
-    /// Specific values for the equity: the website link of the company
-    #[prost(string, tag="35")]
-    pub url: ::prost::alloc::string::String,
 }
 /// Contains the reference data for exchange traded fund (ETF).
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -178,108 +118,60 @@ pub struct EtfEntry {
     /// Identifiers: asset identifier
     #[prost(message, optional, tag="1")]
     pub identifier: ::core::option::Option<super::super::super::r#type::shared::v1::Identifier>,
-    /// General information: the asset class
+    /// General information: asset class
     #[prost(string, tag="2")]
     pub r#type: ::prost::alloc::string::String,
-    /// General information: the primary exchange code (mic)
+    /// General information: asset country code (ISO 3166)
     #[prost(string, tag="3")]
-    pub primary: ::prost::alloc::string::String,
-    /// General information: the operating exchange code (mic)
-    #[prost(string, tag="4")]
-    pub operating: ::prost::alloc::string::String,
-    /// General information: the full name 
-    #[prost(string, tag="5")]
-    pub name: ::prost::alloc::string::String,
-    /// General information: the currency code (ISO 4217)
-    #[prost(string, tag="6")]
-    pub currency: ::prost::alloc::string::String,
-    /// General information: the country code (ISO 3166)
-    #[prost(string, tag="7")]
     pub country: ::prost::alloc::string::String,
-    /// General information: the tick size rule table
-    #[prost(message, repeated, tag="8")]
-    pub tick_size_rule: ::prost::alloc::vec::Vec<TickSize>,
-    /// General information: the major index array
-    #[prost(string, repeated, tag="9")]
-    pub index: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Trading hours: the open time (continuous trading)
-    #[prost(message, optional, tag="10")]
-    pub open: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the close time (continuous trading)
-    #[prost(message, optional, tag="11")]
-    pub close: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the time zone
+    /// General information: asset full name 
+    #[prost(string, tag="4")]
+    pub name: ::prost::alloc::string::String,
+    /// General information: asset currency code (ISO 4217)
+    #[prost(string, tag="5")]
+    pub currency: ::prost::alloc::string::String,
+    /// General information: asset primary exchange code (mic)
+    #[prost(string, tag="6")]
+    pub primary: ::prost::alloc::string::String,
+    /// General information: asset tick size rule table
+    #[prost(string, tag="7")]
+    pub tick_size_rule: ::prost::alloc::string::String,
+    /// General information: asset mapping codes
+    #[prost(map="string, string", tag="8")]
+    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// General information: asset index if it belongs to an index
+    #[prost(string, tag="9")]
+    pub index: ::prost::alloc::string::String,
+    /// Trading hours: open time (continuous trading)
+    #[prost(string, tag="10")]
+    pub open: ::prost::alloc::string::String,
+    /// Trading hours: close time (continuous trading)
+    #[prost(string, tag="11")]
+    pub close: ::prost::alloc::string::String,
+    /// Trading hours: time zone
     #[prost(string, tag="12")]
     pub time_zone: ::prost::alloc::string::String,
-    /// Specifications: the lot size (minimum quantity to trade)
+    /// Specifications: lot size (minimum quantity to trade)
     #[prost(int64, tag="13")]
     pub lot_size: i64,
-    /// Specifications: the point value
+    /// Specifications: point value
     #[prost(double, tag="14")]
     pub point_value: f64,
-    /// Reference data : the average price
-    #[prost(message, optional, tag="15")]
-    pub price: ::core::option::Option<f64>,
-    /// Reference data : the average daily volume 
-    #[prost(message, optional, tag="16")]
-    pub volume: ::core::option::Option<i64>,
-    /// Reference data : the time stamp of the refernce data
-    #[prost(message, optional, tag="17")]
-    pub time: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Mapping : the count of sources used to cross validate and complete the asset's information
-    #[prost(int32, tag="18")]
-    pub sources: i32,
-    /// Mapping: the mapping codes
-    #[prost(map="string, string", tag="19")]
-    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Mapping: the bloomberg code
-    #[prost(string, tag="20")]
-    pub bloomberg: ::prost::alloc::string::String,
-    /// Mapping: the reuters code
-    #[prost(string, tag="21")]
-    pub reuters: ::prost::alloc::string::String,
-    /// Mapping: the morningstar code
-    #[prost(string, tag="22")]
-    pub morningstar: ::prost::alloc::string::String,
-    /// Mapping: the figi code (Financial Instrument Global Identifier, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="23")]
-    pub figi: ::prost::alloc::string::String,
-    /// Mapping: the figic code (Financial Instrument Global Identifier Composite, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="24")]
-    pub figic: ::prost::alloc::string::String,
-    /// Specific values for the etf: isin code (International Securities Identifying Number)
-    #[prost(string, tag="25")]
+    /// Specific values for the equity: isin code (International Securities Identifying Number)
+    #[prost(string, tag="15")]
     pub isin: ::prost::alloc::string::String,
-    /// Specific values for the etf: cusip code : Committee on Uniform Security Identification Procedures
-    #[prost(string, tag="26")]
+    /// Specific values for the equity: cusip code : Committee on Uniform Security Identification Procedures
+    #[prost(string, tag="16")]
     pub cusip: ::prost::alloc::string::String,
-    /// Specific values for the etf: sedol code : Stock Exchange Daily Official List
-    #[prost(string, tag="27")]
+    /// Specific values for the equity: sedol code : Stock Exchange Daily Official List
+    #[prost(string, tag="17")]
     pub sedol: ::prost::alloc::string::String,
-    /// Specific values for the etf: cik (Central Index Key number). The Cik is used as a unique identifier for financial filings with the Security and Exchange Commision of the USA
-    #[prost(string, tag="28")]
-    pub cik: ::prost::alloc::string::String,
-    /// Specific values for the etf: sectors definitions
-    #[prost(map="string, string", tag="29")]
+    /// Specific values for the equity: sectors definitions
+    #[prost(map="string, string", tag="18")]
     pub sectors: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Specific values for the etf: market capitalization
-    #[prost(message, optional, tag="30")]
+    /// Specific values for the equity: market capitalization
+    #[prost(message, optional, tag="19")]
     pub capitalization: ::core::option::Option<f64>,
-    /// Specific values for the etf: the description of the exchange traded fund
-    #[prost(string, tag="31")]
-    pub description: ::prost::alloc::string::String,
-    /// Specific values for the etf: the main address of the exchange traded fund
-    #[prost(string, tag="32")]
-    pub address: ::prost::alloc::string::String,
-    /// Specific values for the etf: the main phone of the exchange traded fund
-    #[prost(string, tag="33")]
-    pub phone: ::prost::alloc::string::String,
-    /// Specific values for the etf: the main email of the exchange traded fund
-    #[prost(string, tag="34")]
-    pub email: ::prost::alloc::string::String,
-    /// Specific values for the etf: the website link of the exchange traded fund
-    #[prost(string, tag="35")]
-    pub url: ::prost::alloc::string::String,
 }
 /// Contains the reference data for futures.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -287,95 +179,65 @@ pub struct FutureEntry {
     /// Identifiers: asset identifier
     #[prost(message, optional, tag="1")]
     pub identifier: ::core::option::Option<super::super::super::r#type::shared::v1::Identifier>,
-    /// General information: the asset class
+    /// General information: asset class
     #[prost(string, tag="2")]
     pub r#type: ::prost::alloc::string::String,
-    /// General information: the primary exchange code (mic)
+    /// General information: asset country code (ISO 3166)
     #[prost(string, tag="3")]
-    pub primary: ::prost::alloc::string::String,
-    /// General information: the operating exchange code (mic)
-    #[prost(string, tag="4")]
-    pub operating: ::prost::alloc::string::String,
-    /// General information: the full name 
-    #[prost(string, tag="5")]
-    pub name: ::prost::alloc::string::String,
-    /// General information: the currency code (ISO 4217)
-    #[prost(string, tag="6")]
-    pub currency: ::prost::alloc::string::String,
-    /// General information: the country code (ISO 3166)
-    #[prost(string, tag="7")]
     pub country: ::prost::alloc::string::String,
-    /// General information: the tick size rule table
-    #[prost(message, repeated, tag="8")]
-    pub tick_size_rule: ::prost::alloc::vec::Vec<TickSize>,
-    /// General information: the major index array
-    #[prost(string, repeated, tag="9")]
-    pub index: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Trading hours: the open time (continuous trading)
-    #[prost(message, optional, tag="10")]
-    pub open: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the close time (continuous trading)
-    #[prost(message, optional, tag="11")]
-    pub close: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the time zone
+    /// General information: asset full name 
+    #[prost(string, tag="4")]
+    pub name: ::prost::alloc::string::String,
+    /// General information: asset currency code (ISO 4217)
+    #[prost(string, tag="5")]
+    pub currency: ::prost::alloc::string::String,
+    /// General information: asset primary exchange code (mic)
+    #[prost(string, tag="6")]
+    pub primary: ::prost::alloc::string::String,
+    /// General information: asset tick size rule table
+    #[prost(string, tag="7")]
+    pub tick_size_rule: ::prost::alloc::string::String,
+    /// General information: asset mapping codes
+    #[prost(map="string, string", tag="8")]
+    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// General information: asset index if it belongs to an index
+    #[prost(string, tag="9")]
+    pub index: ::prost::alloc::string::String,
+    /// Trading hours: open time (continuous trading)
+    #[prost(string, tag="10")]
+    pub open: ::prost::alloc::string::String,
+    /// Trading hours: close time (continuous trading)
+    #[prost(string, tag="11")]
+    pub close: ::prost::alloc::string::String,
+    /// Trading hours: time zone
     #[prost(string, tag="12")]
     pub time_zone: ::prost::alloc::string::String,
-    /// Specifications: the lot size (minimum quantity to trade)
+    /// Specifications: lot size (minimum quantity to trade)
     #[prost(int64, tag="13")]
     pub lot_size: i64,
-    /// Specifications: the point value
+    /// Specifications: point value
     #[prost(double, tag="14")]
     pub point_value: f64,
-    /// Reference data : the average price
-    #[prost(message, optional, tag="15")]
-    pub price: ::core::option::Option<f64>,
-    /// Reference data : the average daily volume 
-    #[prost(message, optional, tag="16")]
-    pub volume: ::core::option::Option<i64>,
-    /// Reference data : the time stamp of the refernce data
-    #[prost(message, optional, tag="17")]
-    pub time: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Mapping : the count of sources used to cross validate and complete the asset's information
-    #[prost(int32, tag="18")]
-    pub sources: i32,
-    /// Mapping: the mapping codes
-    #[prost(map="string, string", tag="19")]
-    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Mapping: the bloomberg code
-    #[prost(string, tag="20")]
-    pub bloomberg: ::prost::alloc::string::String,
-    /// Mapping: the reuters code
-    #[prost(string, tag="21")]
-    pub reuters: ::prost::alloc::string::String,
-    /// Mapping: the morningstar code
-    #[prost(string, tag="22")]
-    pub morningstar: ::prost::alloc::string::String,
-    /// Mapping: the figi code (Financial Instrument Global Identifier, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="23")]
-    pub figi: ::prost::alloc::string::String,
-    /// Mapping: the figic code (Financial Instrument Global Identifier Composite, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="24")]
-    pub figic: ::prost::alloc::string::String,
-    /// Specific values for the future: the future underlying asset code
-    #[prost(string, tag="25")]
+    /// Specific values for the future: underlying asset code
+    #[prost(string, tag="15")]
     pub underlying: ::prost::alloc::string::String,
-    /// Specific values for the future: the future contract code
-    #[prost(string, tag="26")]
+    /// Specific values for the future: contract code
+    #[prost(string, tag="16")]
     pub contract: ::prost::alloc::string::String,
-    /// Specific values for the future: the future category
-    #[prost(map="string, string", tag="27")]
+    /// Specific values for the future: category
+    #[prost(map="string, string", tag="17")]
     pub category: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Specific values for the future: the future chain codes
-    #[prost(string, tag="28")]
+    /// Specific values for the future: chain
+    #[prost(string, tag="18")]
     pub chain: ::prost::alloc::string::String,
-    /// Specific values for the future: the future maturity date
-    #[prost(message, optional, tag="29")]
+    /// Specific values for the future: maturity date
+    #[prost(message, optional, tag="19")]
     pub maturity: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Specific values for the future: the future month code
-    #[prost(string, tag="30")]
+    /// Specific values for the future: month code
+    #[prost(string, tag="20")]
     pub month: ::prost::alloc::string::String,
-    /// Specific values for the future: the future year
-    #[prost(int32, tag="31")]
+    /// Specific values for the future: year
+    #[prost(int32, tag="21")]
     pub year: i32,
 }
 /// Contains the reference data for indices.
@@ -384,267 +246,48 @@ pub struct IndexEntry {
     /// Identifiers: asset identifier
     #[prost(message, optional, tag="1")]
     pub identifier: ::core::option::Option<super::super::super::r#type::shared::v1::Identifier>,
-    /// General information: the asset class
+    /// General information: asset class
     #[prost(string, tag="2")]
     pub r#type: ::prost::alloc::string::String,
-    /// General information: the primary exchange code (mic)
+    /// General information: asset country code (ISO 3166)
     #[prost(string, tag="3")]
-    pub primary: ::prost::alloc::string::String,
-    /// General information: the operating exchange code (mic)
+    pub country: ::prost::alloc::string::String,
+    /// General information: asset full name 
     #[prost(string, tag="4")]
-    pub operating: ::prost::alloc::string::String,
-    /// General information: the full name 
-    #[prost(string, tag="5")]
     pub name: ::prost::alloc::string::String,
-    /// General information: the currency code (ISO 4217)
-    #[prost(string, tag="6")]
+    /// General information: asset currency code (ISO 4217)
+    #[prost(string, tag="5")]
     pub currency: ::prost::alloc::string::String,
-    /// General information: the country code (ISO 3166)
+    /// General information: asset primary exchange code (mic)
+    #[prost(string, tag="6")]
+    pub primary: ::prost::alloc::string::String,
+    /// General information: asset tick size rule table
     #[prost(string, tag="7")]
-    pub country: ::prost::alloc::string::String,
-    /// General information: the tick size rule table
-    #[prost(message, repeated, tag="8")]
-    pub tick_size_rule: ::prost::alloc::vec::Vec<TickSize>,
-    /// General information: the major index array
-    #[prost(string, repeated, tag="9")]
-    pub index: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Trading hours: the open time (continuous trading)
-    #[prost(message, optional, tag="10")]
-    pub open: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the close time (continuous trading)
-    #[prost(message, optional, tag="11")]
-    pub close: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the time zone
+    pub tick_size_rule: ::prost::alloc::string::String,
+    /// General information: asset mapping codes
+    #[prost(map="string, string", tag="8")]
+    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// General information: asset index if it belongs to an index
+    #[prost(string, tag="9")]
+    pub index: ::prost::alloc::string::String,
+    /// Trading hours: open time (continuous trading)
+    #[prost(string, tag="10")]
+    pub open: ::prost::alloc::string::String,
+    /// Trading hours: close time (continuous trading)
+    #[prost(string, tag="11")]
+    pub close: ::prost::alloc::string::String,
+    /// Trading hours: time zone
     #[prost(string, tag="12")]
     pub time_zone: ::prost::alloc::string::String,
-    /// Specifications: the lot size (minimum quantity to trade)
+    /// Specifications: lot size (minimum quantity to trade)
     #[prost(int64, tag="13")]
     pub lot_size: i64,
-    /// Specifications: the point value
+    /// Specifications: point value
     #[prost(double, tag="14")]
     pub point_value: f64,
-    /// Reference data : the average price
-    #[prost(message, optional, tag="15")]
-    pub price: ::core::option::Option<f64>,
-    /// Reference data : the average daily volume 
-    #[prost(message, optional, tag="16")]
-    pub volume: ::core::option::Option<i64>,
-    /// Reference data : the time stamp of the refernce data
-    #[prost(message, optional, tag="17")]
-    pub time: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Mapping : the count of sources used to cross validate and complete the asset's information
-    #[prost(int32, tag="18")]
-    pub sources: i32,
-    /// Mapping: the mapping codes
-    #[prost(map="string, string", tag="19")]
-    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Mapping: the bloomberg code
-    #[prost(string, tag="20")]
-    pub bloomberg: ::prost::alloc::string::String,
-    /// Mapping: the reuters code
-    #[prost(string, tag="21")]
-    pub reuters: ::prost::alloc::string::String,
-    /// Mapping: the morningstar code
-    #[prost(string, tag="22")]
-    pub morningstar: ::prost::alloc::string::String,
-    /// Mapping: the figi code (Financial Instrument Global Identifier, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="23")]
-    pub figi: ::prost::alloc::string::String,
-    /// Mapping: the figic code (Financial Instrument Global Identifier Composite, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="24")]
-    pub figic: ::prost::alloc::string::String,
     /// Specific values for the index: the description of the index
-    #[prost(string, tag="25")]
+    #[prost(string, tag="15")]
     pub description: ::prost::alloc::string::String,
-}
-/// Contains the reference data for crypto currencies.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CryptoEntry {
-    /// Identifiers: asset identifier
-    #[prost(message, optional, tag="1")]
-    pub identifier: ::core::option::Option<super::super::super::r#type::shared::v1::Identifier>,
-    /// General information: the asset class
-    #[prost(string, tag="2")]
-    pub r#type: ::prost::alloc::string::String,
-    /// General information: the primary exchange code (mic)
-    #[prost(string, tag="3")]
-    pub primary: ::prost::alloc::string::String,
-    /// General information: the operating exchange code (mic)
-    #[prost(string, tag="4")]
-    pub operating: ::prost::alloc::string::String,
-    /// General information: the full name 
-    #[prost(string, tag="5")]
-    pub name: ::prost::alloc::string::String,
-    /// General information: the base currency code (ISO 4217)
-    #[prost(string, tag="6")]
-    pub base_currency: ::prost::alloc::string::String,
-    /// General information: the country code (ISO 3166)
-    #[prost(string, tag="7")]
-    pub country: ::prost::alloc::string::String,
-    /// General information: the tick size rule table
-    #[prost(message, repeated, tag="8")]
-    pub tick_size_rule: ::prost::alloc::vec::Vec<TickSize>,
-    /// General information: the major index array
-    #[prost(string, repeated, tag="9")]
-    pub index: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Trading hours: the open time (continuous trading)
-    #[prost(message, optional, tag="10")]
-    pub open: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the close time (continuous trading)
-    #[prost(message, optional, tag="11")]
-    pub close: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the time zone
-    #[prost(string, tag="12")]
-    pub time_zone: ::prost::alloc::string::String,
-    /// Specifications: the lot size (minimum quantity to trade)
-    #[prost(int64, tag="13")]
-    pub lot_size: i64,
-    /// Specifications: the point value
-    #[prost(double, tag="14")]
-    pub point_value: f64,
-    /// Reference data : the average price
-    #[prost(message, optional, tag="15")]
-    pub price: ::core::option::Option<f64>,
-    /// Reference data : the average daily volume 
-    #[prost(message, optional, tag="16")]
-    pub volume: ::core::option::Option<i64>,
-    /// Reference data : the time stamp of the refernce data
-    #[prost(message, optional, tag="17")]
-    pub time: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Mapping : the count of sources used to cross validate and complete the asset's information
-    #[prost(int32, tag="18")]
-    pub sources: i32,
-    /// Mapping: the mapping codes
-    #[prost(map="string, string", tag="19")]
-    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Mapping: the bloomberg code
-    #[prost(string, tag="20")]
-    pub bloomberg: ::prost::alloc::string::String,
-    /// Mapping: the reuters code
-    #[prost(string, tag="21")]
-    pub reuters: ::prost::alloc::string::String,
-    /// Mapping: the morningstar code
-    #[prost(string, tag="22")]
-    pub morningstar: ::prost::alloc::string::String,
-    /// Mapping: the figi code (Financial Instrument Global Identifier, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="23")]
-    pub figi: ::prost::alloc::string::String,
-    /// Mapping: the figic code (Financial Instrument Global Identifier Composite, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="24")]
-    pub figic: ::prost::alloc::string::String,
-    /// Specific values for the crypto: the quote currency code
-    #[prost(string, tag="25")]
-    pub quote_currency: ::prost::alloc::string::String,
-    /// Specific values for the crypto: the consensus mechanisms array (POW, POS, DPOS)
-    #[prost(string, repeated, tag="26")]
-    pub consensus: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Specific values for the crypto: the description of the crypto
-    #[prost(string, tag="27")]
-    pub description: ::prost::alloc::string::String,
-    /// Specific values for the crypto: the issue date of the crypto
-    #[prost(message, optional, tag="28")]
-    pub issue_date: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Specific values for the crypto: the market capitalization
-    #[prost(message, optional, tag="29")]
-    pub capitalization: ::core::option::Option<f64>,
-    /// Specific values for the crypto: the number of coins that are circulating in the market and in the general public's hands
-    #[prost(int32, tag="30")]
-    pub circulating_supply: i32,
-    /// Specific values for the crypto: the maximum amount of coins that will ever exist in the lifetime of the cryptocurrency
-    #[prost(int32, tag="31")]
-    pub max_supply: i32,
-    /// Specific values for the crypto: the total amount of coins in existence right now (minus any coins that have been verifiably burned)
-    #[prost(int32, tag="32")]
-    pub total_supply: i32,
-}
-/// Contains the reference data for Forex pairs.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ForexEntry {
-    /// Identifiers: asset identifier
-    #[prost(message, optional, tag="1")]
-    pub identifier: ::core::option::Option<super::super::super::r#type::shared::v1::Identifier>,
-    /// General information: the asset class
-    #[prost(string, tag="2")]
-    pub r#type: ::prost::alloc::string::String,
-    /// General information: the primary exchange code (mic)
-    #[prost(string, tag="3")]
-    pub primary: ::prost::alloc::string::String,
-    /// General information: the operating exchange code (mic)
-    #[prost(string, tag="4")]
-    pub operating: ::prost::alloc::string::String,
-    /// General information: the full name 
-    #[prost(string, tag="5")]
-    pub name: ::prost::alloc::string::String,
-    /// General information: the base currency code (ISO 4217)
-    #[prost(string, tag="6")]
-    pub base_currency: ::prost::alloc::string::String,
-    /// General information: the country code (ISO 3166)
-    #[prost(string, tag="7")]
-    pub country: ::prost::alloc::string::String,
-    /// General information: the tick size rule table
-    #[prost(message, repeated, tag="8")]
-    pub tick_size_rule: ::prost::alloc::vec::Vec<TickSize>,
-    /// General information: the major index array
-    #[prost(string, repeated, tag="9")]
-    pub index: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Trading hours: the open time (continuous trading)
-    #[prost(message, optional, tag="10")]
-    pub open: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the close time (continuous trading)
-    #[prost(message, optional, tag="11")]
-    pub close: ::core::option::Option<::prost_types::Duration>,
-    /// Trading hours: the time zone
-    #[prost(string, tag="12")]
-    pub time_zone: ::prost::alloc::string::String,
-    /// Specifications: the lot size (minimum quantity to trade)
-    #[prost(int64, tag="13")]
-    pub lot_size: i64,
-    /// Specifications: the point value
-    #[prost(double, tag="14")]
-    pub point_value: f64,
-    /// Reference data : the average price
-    #[prost(message, optional, tag="15")]
-    pub price: ::core::option::Option<f64>,
-    /// Reference data : the average daily volume 
-    #[prost(message, optional, tag="16")]
-    pub volume: ::core::option::Option<i64>,
-    /// Reference data : the time stamp of the refernce data
-    #[prost(message, optional, tag="17")]
-    pub time: ::core::option::Option<super::super::super::super::super::google::r#type::Date>,
-    /// Mapping : the count of sources used to cross validate and complete the asset's information
-    #[prost(int32, tag="18")]
-    pub sources: i32,
-    /// Mapping: the mapping codes
-    #[prost(map="string, string", tag="19")]
-    pub mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Mapping: the bloomberg code
-    #[prost(string, tag="20")]
-    pub bloomberg: ::prost::alloc::string::String,
-    /// Mapping: the reuters code
-    #[prost(string, tag="21")]
-    pub reuters: ::prost::alloc::string::String,
-    /// Mapping: the morningstar code
-    #[prost(string, tag="22")]
-    pub morningstar: ::prost::alloc::string::String,
-    /// Mapping: the figi code (Financial Instrument Global Identifier, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="23")]
-    pub figi: ::prost::alloc::string::String,
-    /// Mapping: the figic code (Financial Instrument Global Identifier Composite, formerly Bloomberg Global Identifier)
-    #[prost(string, tag="24")]
-    pub figic: ::prost::alloc::string::String,
-    /// Specific values for the Forex: the quote currency code
-    #[prost(string, tag="25")]
-    pub quote_currency: ::prost::alloc::string::String,
-}
-/// Contains the tick size rule item : price and tick.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TickSize {
-    /// The price level
-    #[prost(double, tag="1")]
-    pub price: f64,
-    /// The tick size
-    #[prost(double, tag="2")]
-    pub tick: f64,
 }
 /// Contains the asset type for the reference data request.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -662,10 +305,6 @@ pub enum AssetType {
     Etf = 4,
     /// Search only on Index
     Index = 5,
-    /// Search only on Crypto currencies
-    Crypto = 6,
-    /// Search only on Forex pairs
-    Forex = 7,
 }
 /// Generated client implementations.
 pub mod static_data_service_client {
