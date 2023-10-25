@@ -12,11 +12,11 @@ description = "Ganymede.cloud rust client."
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tonic = { version = "0.7", features = ["tls", "prost"] }
-prost = "0.10"
-prost-types = "0.10"
-tokio = { version = "1.0", features = ["macros", "rt-multi-thread", "fs"] }
+tonic = { version = "0.10.2", features = ["tls", "prost"] }
+prost = "0.12"
+prost-types = "0.12"
+tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread", "fs"] }
 
 [build-dependencies]
 walkdir = "2"
-tonic-build = "0.7"
+tonic-build = "0.10.2"
